@@ -99,7 +99,7 @@
             capacity: number;
             passengerArray: Traveler[];
 
-            constructor(capacity: number, passengerArray=[]){
+            constructor(capacity: number, passengerArray: Traveler[]=[]){
                 this.capacity = capacity;
                 this.passengerArray = passengerArray;
 
