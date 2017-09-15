@@ -1,12 +1,6 @@
 (function(){
     
-        // general function to get random number 
-        function getRandomIntInclusive(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-            //The maximum is inclusive and the minimum is inclusive
-        }
+
         /*
         * Interfaces
         */
@@ -60,29 +54,29 @@
             name: string;
             isHealthy: boolean;
 
-            constructor(name: string, food: number = getRandomIntInclusive(0,100), isHealthy: boolean=true){
+            constructor(name: string, food: number, isHealthy: boolean=true){
                 this.name = name;
                 this.food = food;
                 this.isHealthy= isHealthy;
 
             }
 
-            hunt(){
+            // note - best practice to only do one return - don't do a return in your if statement and an else if youd don't have to. 
+
+            hunt(): number {
                 if (Math.random()>.5) {
-                    return this.food += 100;
-                } else {
-                    return this.food;
+                    this.food += 100;
                 }
+                    return this.food;
             }
 
-            eat(){
+            eat(): boolean {
                 if (this.food < 20 ) {
-                    return this.isHealthy = false;
+                    this.isHealthy = false;
                 } else {
                     this.food -= 20;
-                    return this.isHealthy
                 }
-
+                return this.isHealthy;
 
             }
 
@@ -107,31 +101,29 @@
 
             //when implemented, we should add the traveler to the wagon if the capacity permits
             //this function should return the string "added" on success and "sorry" on failure
-            addPassenger(traveler: Traveler){
+            addPassenger(traveler: Traveler): string{
                 if (this.passengerArray.length < this.capacity){
                     this.passengerArray.push(traveler);
                     return "added";
-                } else{
-                    return "sorry";
-                }
+                } 
+                return "sorry";
                
             }
 
             //this should return true if there is at least one unhealthy person in the wagon
             //if everyone is healthy false should be returned
-            isQuarantined() {
+            isQuarantined(): boolean {
                 for (var i = 0; i < this.passengerArray.length; i++) {
                     if (this.passengerArray[i].isHealthy === false){
                         return true;
-                    } else {
-                        return false;
                     }
                   }
+                return false;
 
             }
 
              //Return the total amount of food among all passengers of the wagon.
-             getFood() {
+             getFood(): number {
                 let foodSum = 0;
                 for (var i = 0; i < this.passengerArray.length; i++) {
                     foodSum += this.passengerArray[i].food;   
@@ -174,20 +166,27 @@
 
         // OREGON TRAIL GAME BELOW
 
+        // general function to get random number 
+            function getRandomIntInclusive(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+                //The maximum is inclusive and the minimum is inclusive
+            }
 
-        let Traveler1 = new Traveler("Leah");
-        let Traveler2 = new Traveler("Adam");
-        let Traveler3 = new Traveler("Carrie");
-        let Traveler4 = new Traveler("Ditman");
-        let Traveler5 = new Traveler("Adrienne");
+        let Traveler1 = new Traveler("Leah", getRandomIntInclusive(0, 100));
+        let Traveler2 = new Traveler("Adam", getRandomIntInclusive(0, 100));
+        let Traveler3 = new Traveler("Carrie", getRandomIntInclusive(0, 100));
+        let Traveler4 = new Traveler("Ditman", getRandomIntInclusive(0, 100));
+        let Traveler5 = new Traveler("Adrienne", getRandomIntInclusive(0, 100));
         
         let Wagon1 = new Wagon(4);
         
-        console.log(Traveler1.eat());
-        console.log(Traveler2.eat());
-        console.log(Traveler3.eat());
-        console.log(Traveler4.hunt());
-        console.log(Traveler5.hunt());
+        console.log("Is " + Traveler1.name + " healthy? " + Traveler1.eat());
+        console.log("Is " + Traveler2.name + " healthy? " + Traveler2.eat());
+        console.log("Is " + Traveler3.name + " healthy? " + Traveler3.eat());
+        console.log(Traveler4.name + " hunted! New food amount: " + Traveler4.hunt());
+        console.log(Traveler5.name + " hunted! New food amount: " + Traveler5.hunt());
         
         
         
@@ -195,7 +194,7 @@
 
         passengerArray1.forEach(passenger => {
             if(Math.random()> .5) {
-               console.log(Wagon1.addPassenger(passenger));
+               console.log("Did the passenger get added to the wagon? " + Wagon1.addPassenger(passenger));
             } 
             
         });
@@ -204,9 +203,9 @@
         console.log(Wagon1);
         
 
-        console.log(Wagon1.isQuarantined());
+        console.log("Was the wagon quarantined? " + Wagon1.isQuarantined());
 
-        console.log(Wagon1.getFood());
+        console.log("Total food for the wagon: " + Wagon1.getFood());
 
        
         
